@@ -1,0 +1,1721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="foodpanda: order food from restaurants and track your rider live.">
+  <meta name="theme-color" content="#D70F64">
+  <title>foodpanda</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🐼%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+/* foodpanda - style.css */
+
+:root {
+  --pink: #D70F64;
+  --pink-deep: #A80B4D;
+  --ink: #2B1020;
+  --blush: #FFF2F6;
+  --saffron: #FFB81C;
+  --white: #FFFFFF;
+  --muted: #7A6670;
+  --line: #F0DCE4;
+  --font-display: "Baloo 2", "Trebuchet MS", sans-serif;
+  --font-body: "DM Sans", Arial, sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--white);
+  color: var(--ink);
+  line-height: 1.5;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.hero :focus-visible,
+.join-restaurant :focus-visible,
+footer :focus-visible {
+  outline-color: var(--saffron);
+}
+
+/* ---------- Navbar ---------- */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 28px;
+  background: var(--white);
+  border-bottom: 1px solid var(--line);
+}
+
+.logo {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.75rem;
+  letter-spacing: -0.5px;
+  color: var(--pink);
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.nav-links a:hover {
+  color: var(--pink);
+}
+
+.cart-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 6px 6px 16px;
+  border-radius: 999px;
+  background: var(--pink);
+  color: var(--white);
+}
+
+.nav-links .cart-link:hover {
+  background: var(--pink-deep);
+  color: var(--white);
+}
+
+.cart-count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 26px;
+  height: 26px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--pink);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  background: var(--pink);
+  color: var(--white);
+  padding: 64px 24px 80px;
+}
+
+.hero-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: center;
+  gap: 48px;
+}
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.4rem, 5vw, 3.8rem);
+  line-height: 1.05;
+  letter-spacing: -1px;
+}
+
+.hero-text p {
+  margin-top: 16px;
+  max-width: 440px;
+  font-size: 1.1rem;
+  opacity: 0.92;
+}
+
+.search-box {
+  display: block;
+  width: 100%;
+  max-width: 440px;
+  margin-top: 28px;
+  padding: 16px 22px;
+  border: none;
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--ink);
+  font: inherit;
+  font-size: 1rem;
+}
+
+.search-box::placeholder {
+  color: var(--muted);
+}
+
+/* Order tracker (main element of the hero) */
+.tracker {
+  background: var(--white);
+  color: var(--ink);
+  border-radius: 24px;
+  padding: 24px 24px 22px;
+  box-shadow: 0 24px 48px rgba(43, 16, 32, 0.28);
+}
+
+.tracker-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.tracker-id {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.tracker-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.35rem;
+  line-height: 1.2;
+}
+
+.tracker-status {
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--blush);
+  color: var(--pink);
+  font-size: 0.85rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.track {
+  position: relative;
+  margin-top: 46px;
+}
+
+.track-line {
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  top: 5px;
+  height: 4px;
+  border-radius: 4px;
+  background: var(--line);
+}
+
+.track-fill {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: 4px;
+  background: var(--pink);
+  animation: fill 3.2s 0.4s ease-out forwards;
+}
+
+.rider {
+  position: absolute;
+  top: -36px;
+  left: 10%;
+  transform: translateX(-50%);
+  font-size: 1.7rem;
+  animation: ride 3.2s 0.4s ease-out forwards;
+}
+
+.steps {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  list-style: none;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.step.now {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.dot {
+  position: relative;
+  z-index: 1;
+  width: 14px;
+  height: 14px;
+  border: 3px solid var(--line);
+  border-radius: 50%;
+  background: var(--white);
+}
+
+.step.done .dot {
+  animation: dotOn 0.2s var(--d, 0s) forwards;
+}
+
+@keyframes fill {
+  to { width: 75%; }
+}
+
+@keyframes ride {
+  to { left: 70%; }
+}
+
+@keyframes dotOn {
+  to {
+    background: var(--pink);
+    border-color: var(--pink);
+  }
+}
+
+/* ---------- Menu ---------- */
+.menu {
+  position: relative;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 64px 24px 24px;
+  scroll-margin-top: 60px;
+}
+
+.filter-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.menu-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.menu-head h2,
+.how h2 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 2rem;
+  line-height: 1.1;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  padding: 8px 16px;
+  border: 2px solid var(--line);
+  border-radius: 999px;
+  background: var(--white);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.chip:hover {
+  border-color: var(--pink);
+}
+
+#f-all:checked ~ .menu-head [for="f-all"],
+#f-pak:checked ~ .menu-head [for="f-pak"],
+#f-fast:checked ~ .menu-head [for="f-fast"],
+#f-chi:checked ~ .menu-head [for="f-chi"],
+#f-des:checked ~ .menu-head [for="f-des"] {
+  background: var(--pink);
+  border-color: var(--pink);
+  color: var(--white);
+}
+
+#f-all:focus-visible ~ .menu-head [for="f-all"],
+#f-pak:focus-visible ~ .menu-head [for="f-pak"],
+#f-fast:focus-visible ~ .menu-head [for="f-fast"],
+#f-chi:focus-visible ~ .menu-head [for="f-chi"],
+#f-des:focus-visible ~ .menu-head [for="f-des"] {
+  outline: 3px solid var(--ink);
+  outline-offset: 3px;
+}
+
+/* Cuisine filter (works without JavaScript) */
+.menu:has(#f-pak:checked) .card:not([data-cuisine="Pakistani"]),
+.menu:has(#f-fast:checked) .card:not([data-cuisine="Fast Food"]),
+.menu:has(#f-chi:checked) .card:not([data-cuisine="Chinese"]),
+.menu:has(#f-des:checked) .card:not([data-cuisine="Desserts"]) {
+  display: none;
+}
+
+.restaurants {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 24px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--white);
+}
+
+.card-art {
+  display: grid;
+  place-items: center;
+  height: 150px;
+  font-size: 4.5rem;
+}
+
+.art-pak { background: #FFE7A8; }
+.art-pizza { background: #FFD0DF; }
+.art-noodle { background: #E6DAFF; }
+.art-burger { background: #FFDCC2; }
+.art-dessert { background: #EBD3C4; }
+
+.card-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 18px 18px;
+}
+
+.card h3 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.15rem;
+  line-height: 1.25;
+}
+
+.shop {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.meta {
+  display: flex;
+  gap: 14px;
+  margin-top: 4px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.rating {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.card-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 14px;
+}
+
+.price {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.25rem;
+  color: var(--pink);
+}
+
+/* ---------- Buttons ---------- */
+.btn,
+.add-to-cart {
+  display: inline-block;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 999px;
+  background: var(--pink);
+  color: var(--white);
+  font: inherit;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn:hover,
+.add-to-cart:hover {
+  background: var(--pink-deep);
+}
+
+.btn:active,
+.add-to-cart:active {
+  transform: scale(0.97);
+}
+
+.btn.btn-light {
+  background: var(--white);
+  color: var(--pink);
+}
+
+.btn.btn-light:hover {
+  background: var(--blush);
+}
+
+/* ---------- How it works ---------- */
+.how {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 56px 24px;
+}
+
+.how h2 {
+  margin-bottom: 28px;
+}
+
+.how-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  list-style: none;
+}
+
+.how-list li {
+  padding-top: 16px;
+  border-top: 3px solid var(--pink);
+}
+
+.how-num {
+  display: block;
+  margin-bottom: 6px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 2.4rem;
+  line-height: 1;
+  color: var(--pink);
+}
+
+.how-list h3 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.15rem;
+}
+
+.how-list p {
+  margin-top: 4px;
+  color: var(--muted);
+}
+
+/* ---------- Join ---------- */
+.join {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 8px 24px 64px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.join-box {
+  padding: 36px;
+  border-radius: 28px;
+  color: var(--white);
+}
+
+.join-restaurant {
+  background: var(--ink);
+}
+
+.join-rider {
+  background: var(--pink);
+}
+
+.join-box h2 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.6rem;
+  line-height: 1.15;
+}
+
+.join-box p {
+  margin: 10px 0 22px;
+  max-width: 360px;
+  opacity: 0.88;
+}
+
+/* ---------- Footer ---------- */
+footer {
+  padding: 32px 24px;
+  background: var(--ink);
+  color: var(--white);
+  text-align: center;
+}
+
+.footer-logo {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.4rem;
+  color: var(--white);
+}
+
+footer p {
+  font-size: 0.9rem;
+  opacity: 0.75;
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 800px) {
+  .hero-inner,
+  .join {
+    grid-template-columns: 1fr;
+  }
+
+  .how-list {
+    grid-template-columns: 1fr;
+  }
+
+  .hero {
+    padding: 40px 20px 56px;
+  }
+}
+
+@media (max-width: 560px) {
+  .navbar {
+    padding: 12px 16px;
+  }
+
+  .nav-links a:not(.cart-link) {
+    display: none;
+  }
+
+  .join-box {
+    padding: 28px 24px;
+  }
+}
+
+/* ---------- Skip link ---------- */
+.skip-link {
+  position: absolute;
+  left: 12px;
+  top: -60px;
+  z-index: 20;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--white);
+}
+
+.skip-link:focus {
+  top: 12px;
+}
+
+.hero-text .hero-pay {
+  margin-top: 14px;
+  font-size: 0.9rem;
+  opacity: 0.85;
+}
+
+/* ---------- Promo strip ---------- */
+.promo {
+  background: var(--saffron);
+  color: var(--ink);
+}
+
+.promo-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 14px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.promo-code {
+  padding: 4px 12px;
+  border: 2px dashed var(--ink);
+  border-radius: 8px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* ---------- Nearby restaurants ---------- */
+.nearby {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 56px 24px 0;
+  scroll-margin-top: 60px;
+}
+
+.nearby h2,
+.faq h2,
+.perks-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 2rem;
+  line-height: 1.1;
+}
+
+.section-sub {
+  margin: 6px 0 24px;
+  color: var(--muted);
+}
+
+.resto-row {
+  display: flex;
+  gap: 16px;
+  padding-bottom: 12px;
+  overflow-x: auto;
+  list-style: none;
+  scroll-snap-type: x mandatory;
+}
+
+.resto {
+  flex: 0 0 220px;
+  padding: 18px;
+  border-radius: 20px;
+  background: var(--blush);
+  scroll-snap-align: start;
+}
+
+.resto-logo {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 12px;
+  border-radius: 14px;
+  background: var(--pink);
+  color: var(--white);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.3rem;
+}
+
+.resto:nth-child(2) .resto-logo { background: var(--ink); }
+.resto:nth-child(3) .resto-logo { background: var(--saffron); color: var(--ink); }
+.resto:nth-child(4) .resto-logo { background: var(--pink-deep); }
+.resto:nth-child(5) .resto-logo { background: var(--ink); }
+
+.resto h3 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+
+.resto p {
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.resto-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+/* ---------- Perks ---------- */
+.perks {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 56px 24px 8px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.perk {
+  padding: 0 20px;
+  border-left: 2px solid var(--line);
+}
+
+.perk:first-child {
+  padding-left: 0;
+  border-left: none;
+}
+
+.perk-icon {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 1.8rem;
+}
+
+.perk h3 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.05rem;
+}
+
+.perk p {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+/* ---------- FAQ ---------- */
+.faq {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 40px 24px 64px;
+}
+
+.faq h2 {
+  margin-bottom: 16px;
+}
+
+.faq details {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.faq summary {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  font-weight: 700;
+  list-style: none;
+  cursor: pointer;
+}
+
+.faq summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq summary::after {
+  content: "+";
+  color: var(--pink);
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.faq details[open] summary::after {
+  content: "\2212";
+}
+
+.faq details p {
+  margin-top: 8px;
+  color: var(--muted);
+}
+
+/* ---------- Footer columns ---------- */
+.footer-grid {
+  max-width: 1100px;
+  margin: 0 auto 24px;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  gap: 24px;
+  text-align: left;
+}
+
+.footer-grid h4 {
+  margin-bottom: 8px;
+  font-family: var(--font-display);
+  font-size: 1rem;
+}
+
+.footer-grid ul {
+  list-style: none;
+}
+
+.footer-grid li {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.footer-grid a {
+  text-decoration: none;
+}
+
+.footer-grid a:hover {
+  text-decoration: underline;
+}
+
+.footer-bottom {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+@media (max-width: 800px) {
+  .perks {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  .perk,
+  .perk:first-child {
+    padding: 0;
+    border-left: none;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .perks,
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- Hidden and empty states ---------- */
+[hidden] {
+  display: none !important;
+}
+
+.empty {
+  padding: 32px 0;
+  color: var(--muted);
+  text-align: center;
+}
+
+/* ---------- Cart drawer ---------- */
+.cart-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  background: rgba(43, 16, 32, 0.5);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+.cart-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.cart-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 31;
+  display: flex;
+  flex-direction: column;
+  width: min(400px, 100%);
+  padding: 20px 22px;
+  background: var(--white);
+  transform: translateX(100%);
+  visibility: hidden;
+  transition: transform 0.25s, visibility 0.25s;
+}
+
+.cart-panel.open {
+  transform: none;
+  visibility: visible;
+}
+
+.cart-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cart-head h2 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.5rem;
+}
+
+.cart-close {
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  background: var(--blush);
+  color: var(--pink);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.cart-restaurant {
+  min-height: 1.4em;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.cart-items {
+  flex: 1;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.cart-item-name {
+  font-weight: 700;
+}
+
+.cart-item-price {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.qty {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.qty button {
+  width: 28px;
+  height: 28px;
+  border: 2px solid var(--line);
+  border-radius: 50%;
+  background: var(--white);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.qty button:hover {
+  border-color: var(--pink);
+  color: var(--pink);
+}
+
+.qty span {
+  min-width: 18px;
+  text-align: center;
+  font-weight: 700;
+}
+
+.cart-empty {
+  padding: 24px 0;
+  color: var(--muted);
+}
+
+.cart-voucher {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.cart-voucher input,
+.cart-pay select {
+  flex: 1;
+  padding: 10px 14px;
+  border: 2px solid var(--line);
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--ink);
+  font: inherit;
+}
+
+.cart-note {
+  min-height: 1.4em;
+  margin-top: 6px;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.cart-note.ok {
+  color: #1B7F4B;
+}
+
+.cart-note.error {
+  color: var(--pink);
+}
+
+.cart-pay {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+  font-weight: 500;
+}
+
+.cart-totals {
+  margin: 14px 0;
+}
+
+.cart-totals p {
+  display: flex;
+  justify-content: space-between;
+  padding: 3px 0;
+  font-size: 0.95rem;
+}
+
+.cart-totals .total {
+  margin-top: 6px;
+  padding-top: 10px;
+  border-top: 2px solid var(--ink);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.2rem;
+}
+
+.cart-checkout {
+  width: 100%;
+  padding: 14px;
+}
+
+.btn:disabled,
+.btn:disabled:hover {
+  background: var(--pink);
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cart-panel,
+  .cart-overlay {
+    transition: none;
+  }
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .track-fill {
+    animation: none;
+    width: 75%;
+  }
+
+  .rider {
+    animation: none;
+    left: 70%;
+  }
+
+  .step.done .dot {
+    animation: none;
+    background: var(--pink);
+    border-color: var(--pink);
+  }
+}
+
+</style>
+</head>
+<body>
+
+  <a class="skip-link" href="#restaurants">Skip to menu</a>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <a class="logo" href="#">foodpanda</a>
+    <nav class="nav-links">
+      <a href="#nearby">Restaurants</a>
+      <a href="#restaurants">Menu</a>
+      <a href="#faq">Help</a>
+      <a href="#" class="cart-link">Cart <span class="cart-count" id="cart-count">0</span></a>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-text">
+        <h1>Hungry? Your food is on the way.</h1>
+        <p>Order from restaurants in your city and track your rider live.</p>
+        <input type="text" class="search-box" id="search-box" placeholder="Search restaurants or dishes" aria-label="Search restaurants or dishes">
+        <p class="hero-pay">Pay with cash on delivery, card or mobile wallet.</p>
+      </div>
+
+      <div class="tracker" aria-label="Order tracking example">
+        <div class="tracker-top">
+          <div>
+            <p class="tracker-id">Order O502</p>
+            <p class="tracker-title">Fajita Pizza (Large) x2</p>
+          </div>
+          <p class="tracker-status">Rider is on the way</p>
+        </div>
+
+        <div class="track">
+          <div class="track-line"><span class="track-fill"></span></div>
+          <span class="rider" aria-hidden="true">🛵</span>
+          <ol class="steps">
+            <li class="step done" style="--d:0.4s"><span class="dot"></span>Placed</li>
+            <li class="step done" style="--d:1.2s"><span class="dot"></span>Preparing</li>
+            <li class="step done" style="--d:2s"><span class="dot"></span>Picked up</li>
+            <li class="step done now" style="--d:3s"><span class="dot"></span>On the way</li>
+            <li class="step"><span class="dot"></span>Delivered</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Voucher strip -->
+  <div class="promo">
+    <div class="promo-inner">
+      <span>Have a voucher? Enter the code at checkout to get a discount.</span>
+      <span class="promo-code">WELCOME</span>
+    </div>
+  </div>
+
+  <!-- Nearby restaurants -->
+  <section class="nearby" id="nearby">
+    <h2>Restaurants that deliver to you</h2>
+    <p class="section-sub">Compare ratings and delivery fees, then pick your favourite.</p>
+    <ul class="resto-row">
+      <li class="resto">
+        <div class="resto-logo" aria-hidden="true">S</div>
+        <h3>Savour Foods</h3>
+        <p>Pakistani, Faisalabad</p>
+        <div class="resto-meta"><span>★ 4.5</span><span>Rs. 99</span></div>
+      </li>
+      <li class="resto">
+        <div class="resto-logo" aria-hidden="true">P</div>
+        <h3>Pizza Point</h3>
+        <p>Fast Food, Lahore</p>
+        <div class="resto-meta"><span>★ 4.3</span><span>Rs. 129</span></div>
+      </li>
+      <li class="resto">
+        <div class="resto-logo" aria-hidden="true">D</div>
+        <h3>Dragon Wok</h3>
+        <p>Chinese, Islamabad</p>
+        <div class="resto-meta"><span>★ 4.4</span><span>Rs. 149</span></div>
+      </li>
+      <li class="resto">
+        <div class="resto-logo" aria-hidden="true">B</div>
+        <h3>Burger Hub</h3>
+        <p>Fast Food, Karachi</p>
+        <div class="resto-meta"><span>★ 4.1</span><span>Rs. 89</span></div>
+      </li>
+      <li class="resto">
+        <div class="resto-logo" aria-hidden="true">T</div>
+        <h3>Sweet Tooth Bakers</h3>
+        <p>Desserts, Faisalabad</p>
+        <div class="resto-meta"><span>★ 4.7</span><span>Rs. 79</span></div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Menu -->
+  <section class="menu" id="restaurants">
+    <input class="filter-input" type="radio" name="cuisine" id="f-all" checked>
+    <input class="filter-input" type="radio" name="cuisine" id="f-pak">
+    <input class="filter-input" type="radio" name="cuisine" id="f-fast">
+    <input class="filter-input" type="radio" name="cuisine" id="f-chi">
+    <input class="filter-input" type="radio" name="cuisine" id="f-des">
+
+    <div class="menu-head">
+      <h2>What are you craving today?</h2>
+      <div class="chips">
+        <label class="chip" for="f-all">All</label>
+        <label class="chip" for="f-pak">Pakistani</label>
+        <label class="chip" for="f-fast">Fast Food</label>
+        <label class="chip" for="f-chi">Chinese</label>
+        <label class="chip" for="f-des">Desserts</label>
+      </div>
+    </div>
+
+    <div class="restaurants">
+
+      <article class="card" data-cuisine="Pakistani">
+        <div class="card-art art-pak" aria-hidden="true">🍛</div>
+        <div class="card-body">
+          <h3>Chicken Karahi (Half)</h3>
+          <p class="shop">Savour Foods, Faisalabad</p>
+          <p class="meta"><span class="rating">★ 4.5</span><span>Delivery Rs. 99</span></p>
+          <div class="card-foot">
+            <p class="price">Rs. 1,100</p>
+            <button class="add-to-cart" data-name="Chicken Karahi (Half)" data-price="1100">Add to cart</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" data-cuisine="Fast Food">
+        <div class="card-art art-pizza" aria-hidden="true">🍕</div>
+        <div class="card-body">
+          <h3>Fajita Pizza (Large)</h3>
+          <p class="shop">Pizza Point, Lahore</p>
+          <p class="meta"><span class="rating">★ 4.3</span><span>Delivery Rs. 129</span></p>
+          <div class="card-foot">
+            <p class="price">Rs. 1,899</p>
+            <button class="add-to-cart" data-name="Fajita Pizza (Large)" data-price="1899">Add to cart</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" data-cuisine="Chinese">
+        <div class="card-art art-noodle" aria-hidden="true">🍜</div>
+        <div class="card-body">
+          <h3>Chicken Chowmein</h3>
+          <p class="shop">Dragon Wok, Islamabad</p>
+          <p class="meta"><span class="rating">★ 4.4</span><span>Delivery Rs. 149</span></p>
+          <div class="card-foot">
+            <p class="price">Rs. 750</p>
+            <button class="add-to-cart" data-name="Chicken Chowmein" data-price="750">Add to cart</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" data-cuisine="Fast Food">
+        <div class="card-art art-burger" aria-hidden="true">🍔</div>
+        <div class="card-body">
+          <h3>Zinger Burger</h3>
+          <p class="shop">Burger Hub, Karachi</p>
+          <p class="meta"><span class="rating">★ 4.1</span><span>Delivery Rs. 89</span></p>
+          <div class="card-foot">
+            <p class="price">Rs. 560</p>
+            <button class="add-to-cart" data-name="Zinger Burger" data-price="560">Add to cart</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" data-cuisine="Desserts">
+        <div class="card-art art-dessert" aria-hidden="true">🍫</div>
+        <div class="card-body">
+          <h3>Chocolate Brownie</h3>
+          <p class="shop">Sweet Tooth Bakers, Faisalabad</p>
+          <p class="meta"><span class="rating">★ 4.7</span><span>Delivery Rs. 79</span></p>
+          <div class="card-foot">
+            <p class="price">Rs. 350</p>
+            <button class="add-to-cart" data-name="Chocolate Brownie" data-price="350">Add to cart</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" data-cuisine="Pakistani">
+        <div class="card-art art-pak" aria-hidden="true">🍚</div>
+        <div class="card-body">
+          <h3>Chicken Biryani</h3>
+          <p class="shop">Savour Foods, Faisalabad</p>
+          <p class="meta"><span class="rating">★ 4.5</span><span>Delivery Rs. 99</span></p>
+          <div class="card-foot">
+            <p class="price">Rs. 650</p>
+            <button class="add-to-cart" data-name="Chicken Biryani" data-price="650">Add to cart</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" data-cuisine="Fast Food">
+        <div class="card-art art-burger" aria-hidden="true">🌯</div>
+        <div class="card-body">
+          <h3>Chicken Shawarma Roll</h3>
+          <p class="shop">Burger Hub, Karachi</p>
+          <p class="meta"><span class="rating">★ 4.1</span><span>Delivery Rs. 89</span></p>
+          <div class="card-foot">
+            <p class="price">Rs. 420</p>
+            <button class="add-to-cart" data-name="Chicken Shawarma Roll" data-price="420">Add to cart</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" data-cuisine="Desserts">
+        <div class="card-art art-dessert" aria-hidden="true">🍰</div>
+        <div class="card-body">
+          <h3>Cheesecake Slice</h3>
+          <p class="shop">Sweet Tooth Bakers, Faisalabad</p>
+          <p class="meta"><span class="rating">★ 4.7</span><span>Delivery Rs. 79</span></p>
+          <div class="card-foot">
+            <p class="price">Rs. 450</p>
+            <button class="add-to-cart" data-name="Cheesecake Slice" data-price="450">Add to cart</button>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- Perks -->
+  <section class="perks" aria-label="Why foodpanda">
+    <div class="perk">
+      <span class="perk-icon" aria-hidden="true">📍</span>
+      <h3>Live tracking</h3>
+      <p>See your rider's location on the map in real time.</p>
+    </div>
+    <div class="perk">
+      <span class="perk-icon" aria-hidden="true">💳</span>
+      <h3>Three ways to pay</h3>
+      <p>Cash on delivery, card or mobile wallet.</p>
+    </div>
+    <div class="perk">
+      <span class="perk-icon" aria-hidden="true">🎟️</span>
+      <h3>Vouchers</h3>
+      <p>Apply a code at checkout and lower your total.</p>
+    </div>
+    <div class="perk">
+      <span class="perk-icon" aria-hidden="true">🔁</span>
+      <h3>Easy reorder</h3>
+      <p>Bring back a past order to your cart in one tap.</p>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="how" id="how">
+    <h2>How your order reaches you</h2>
+    <ol class="how-list">
+      <li>
+        <span class="how-num">1</span>
+        <h3>Pick your dishes and order</h3>
+        <p>Add dishes to your cart, apply a voucher and pay.</p>
+      </li>
+      <li>
+        <span class="how-num">2</span>
+        <h3>The restaurant prepares your food</h3>
+        <p>The restaurant accepts your order and you get status updates.</p>
+      </li>
+      <li>
+        <span class="how-num">3</span>
+        <h3>A rider brings it to your door</h3>
+        <p>Follow your rider live and rate the delivery afterwards.</p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq" id="faq">
+    <h2>Frequently asked questions</h2>
+    <details>
+      <summary>How do I pay for my order?</summary>
+      <p>At checkout, choose cash on delivery, card or mobile wallet.</p>
+    </details>
+    <details>
+      <summary>How do I use a voucher?</summary>
+      <p>Enter your voucher code in the checkout form. Only one valid voucher can be used per order.</p>
+    </details>
+    <details>
+      <summary>How can I see where my rider is?</summary>
+      <p>The order tracking screen shows your order status and the rider's live location.</p>
+    </details>
+    <details>
+      <summary>What if the restaurant rejects my order?</summary>
+      <p>The order is cancelled, and if you already paid, you are refunded.</p>
+    </details>
+    <details>
+      <summary>Can I repeat an earlier order?</summary>
+      <p>Open your order history and tap reorder. The items go back into your cart, as long as the restaurant and dishes are still available.</p>
+    </details>
+  </section>
+
+  <!-- Join -->
+  <section class="join" id="join">
+    <div class="join-box join-restaurant">
+      <h2>Own a restaurant?</h2>
+      <p>Manage your menu yourself and accept or reject new orders.</p>
+      <a class="btn" href="#">Register your restaurant</a>
+    </div>
+    <div class="join-box join-rider">
+      <h2>Want to become a rider?</h2>
+      <p>Accept delivery requests when it suits you and track your earnings.</p>
+      <a class="btn btn-light" href="#">Join as a rider</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <p class="footer-logo">foodpanda</p>
+        <p>Online food ordering and delivery system.</p>
+      </div>
+      <div>
+        <h4>Customers</h4>
+        <ul>
+          <li><a href="#restaurants">Menu</a></li>
+          <li><a href="#nearby">Restaurants</a></li>
+          <li><a href="#faq">Help</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Partners</h4>
+        <ul>
+          <li><a href="#join">Register a restaurant</a></li>
+          <li><a href="#join">Become a rider</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Project</h4>
+        <ul>
+          <li>UET Lahore, FSD Campus</li>
+          <li>Department of Computer Science</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 foodpanda. This is a university project.</p>
+    </div>
+  </footer>
+
+  <script>
+// foodpanda - script.js
+// Works with index.html and style.css (keep all three in the same folder).
+
+const VOUCHERS = { WELCOME: 0.1 }; // WELCOME = 10% off
+const EMPTY_CART = { restaurant: "", fee: 0, items: [], voucher: "" };
+
+let cart = { ...EMPTY_CART, items: [] };
+
+try {
+  const saved = JSON.parse(localStorage.getItem("foodpanda-cart"));
+  if (saved && Array.isArray(saved.items)) cart = { ...EMPTY_CART, ...saved };
+} catch (e) {}
+
+const $ = (selector, root = document) => root.querySelector(selector);
+const money = (n) => "Rs. " + n.toLocaleString("en-US");
+
+/* ---------- Build the cart drawer ---------- */
+document.body.insertAdjacentHTML("beforeend", `
+  <div class="cart-overlay"></div>
+  <aside class="cart-panel" aria-label="Your cart">
+    <div class="cart-head">
+      <h2>Your cart</h2>
+      <button class="cart-close" aria-label="Close cart">&times;</button>
+    </div>
+    <p class="cart-restaurant"></p>
+    <ul class="cart-items"></ul>
+    <p class="cart-empty">Your cart is empty. Add a dish to get started.</p>
+    <div class="cart-voucher">
+      <input type="text" id="voucher-input" placeholder="Voucher code" aria-label="Voucher code">
+      <button class="btn" id="voucher-apply">Apply</button>
+    </div>
+    <p class="cart-note" aria-live="polite"></p>
+    <div class="cart-pay">
+      <label for="pay-method">Pay with</label>
+      <select id="pay-method">
+        <option>Cash on delivery</option>
+        <option>Card</option>
+        <option>Mobile wallet</option>
+      </select>
+    </div>
+    <div class="cart-totals">
+      <p><span>Subtotal</span><span id="t-subtotal"></span></p>
+      <p><span>Delivery fee</span><span id="t-fee"></span></p>
+      <p><span>Discount</span><span id="t-discount"></span></p>
+      <p class="total"><span>Total</span><span id="t-total"></span></p>
+    </div>
+    <button class="btn cart-checkout">Place order</button>
+  </aside>
+`);
+
+const overlay = $(".cart-overlay");
+const panel = $(".cart-panel");
+const closeBtn = $(".cart-close");
+const list = $(".cart-items");
+const emptyMsg = $(".cart-empty");
+const restaurantEl = $(".cart-restaurant");
+const noteEl = $(".cart-note");
+const voucherInput = $("#voucher-input");
+const payEl = $("#pay-method");
+const checkoutBtn = $(".cart-checkout");
+const countEl = $("#cart-count");
+
+/* ---------- Cart logic ---------- */
+function save() {
+  try {
+    localStorage.setItem("foodpanda-cart", JSON.stringify(cart));
+  } catch (e) {}
+}
+
+function totals() {
+  const subtotal = cart.items.reduce((sum, i) => sum + i.price * i.qty, 0);
+  const fee = cart.items.length ? cart.fee : 0;
+  const rate = VOUCHERS[cart.voucher] || 0;
+  const discount = Math.round(subtotal * rate);
+  return { subtotal, fee, discount, total: subtotal - discount + fee };
+}
+
+function setNote(text, type = "") {
+  noteEl.textContent = text;
+  noteEl.className = "cart-note " + type;
+}
+
+function render() {
+  const count = cart.items.reduce((sum, i) => sum + i.qty, 0);
+  const t = totals();
+
+  countEl.textContent = count;
+  restaurantEl.textContent = cart.items.length ? "From " + cart.restaurant : "";
+  emptyMsg.hidden = count > 0;
+  checkoutBtn.disabled = count === 0;
+
+  list.innerHTML = cart.items.map((item, index) => `
+    <li class="cart-item">
+      <div>
+        <p class="cart-item-name">${item.name}</p>
+        <p class="cart-item-price">${money(item.price)}</p>
+      </div>
+      <div class="qty">
+        <button data-act="dec" data-i="${index}" aria-label="Decrease ${item.name}">&minus;</button>
+        <span>${item.qty}</span>
+        <button data-act="inc" data-i="${index}" aria-label="Increase ${item.name}">+</button>
+      </div>
+    </li>
+  `).join("");
+
+  $("#t-subtotal").textContent = money(t.subtotal);
+  $("#t-fee").textContent = money(t.fee);
+  $("#t-discount").textContent = t.discount ? "- " + money(t.discount) : money(0);
+  $("#t-total").textContent = money(t.total);
+
+  save();
+}
+
+function addToCart(button) {
+  const card = button.closest(".card");
+  const restaurant = $(".shop", card).textContent.split(",")[0].trim();
+  const fee = parseInt($(".meta span:last-child", card).textContent.replace(/\D/g, ""), 10) || 0;
+  const name = button.dataset.name;
+  const price = Number(button.dataset.price);
+
+  // All items in one order must come from one restaurant
+  if (cart.items.length && cart.restaurant !== restaurant) {
+    const ok = confirm(`Your cart has items from ${cart.restaurant}. Start a new cart with ${restaurant}?`);
+    if (!ok) return;
+    cart = { ...EMPTY_CART, items: [] };
+  }
+
+  cart.restaurant = restaurant;
+  cart.fee = fee;
+
+  const existing = cart.items.find((i) => i.name === name);
+  if (existing) existing.qty += 1;
+  else cart.items.push({ name, price, qty: 1 });
+
+  setNote("");
+  render();
+
+  // Small confirmation on the button
+  button.textContent = "Added \u2713";
+  setTimeout(() => (button.textContent = "Add to cart"), 900);
+}
+
+/* ---------- Open and close the drawer ---------- */
+let lastFocus = null;
+
+function openCart() {
+  lastFocus = document.activeElement;
+  panel.classList.add("open");
+  overlay.classList.add("open");
+  document.body.style.overflow = "hidden";
+  closeBtn.focus();
+}
+
+function closeCart() {
+  panel.classList.remove("open");
+  overlay.classList.remove("open");
+  document.body.style.overflow = "";
+  if (lastFocus) lastFocus.focus();
+}
+
+/* ---------- Events ---------- */
+document.addEventListener("click", (e) => {
+  const addBtn = e.target.closest(".add-to-cart");
+  if (addBtn) addToCart(addBtn);
+
+  if (e.target.closest(".cart-link")) {
+    e.preventDefault();
+    openCart();
+  }
+});
+
+closeBtn.addEventListener("click", closeCart);
+overlay.addEventListener("click", closeCart);
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && panel.classList.contains("open")) closeCart();
+});
+
+list.addEventListener("click", (e) => {
+  const btn = e.target.closest("button[data-act]");
+  if (!btn) return;
+
+  const item = cart.items[Number(btn.dataset.i)];
+  if (btn.dataset.act === "inc") item.qty += 1;
+  else item.qty -= 1;
+
+  cart.items = cart.items.filter((i) => i.qty > 0);
+  if (!cart.items.length) cart = { ...EMPTY_CART, items: [] };
+  render();
+});
+
+$("#voucher-apply").addEventListener("click", () => {
+  const code = voucherInput.value.trim().toUpperCase();
+
+  if (!cart.items.length) return setNote("Add a dish before applying a voucher.", "error");
+  if (!code) return setNote("Enter a voucher code.", "error");
+  if (!VOUCHERS[code]) return setNote("This voucher code is not valid.", "error");
+
+  cart.voucher = code;
+  render();
+  setNote(`Voucher ${code} applied: ${VOUCHERS[code] * 100}% off.`, "ok");
+});
+
+checkoutBtn.addEventListener("click", () => {
+  const t = totals();
+  const orderId = "O" + Math.floor(1000 + Math.random() * 9000);
+  const message = `Order ${orderId} placed with ${cart.restaurant}. Total ${money(t.total)}, paying by ${payEl.value.toLowerCase()}.`;
+
+  cart = { ...EMPTY_CART, items: [] };
+  voucherInput.value = "";
+  render();
+  setNote(message, "ok");
+});
+
+/* ---------- Search ---------- */
+const searchBox = $("#search-box");
+const cards = document.querySelectorAll(".card");
+const restos = document.querySelectorAll(".resto");
+
+$(".restaurants").insertAdjacentHTML(
+  "afterend",
+  '<p class="empty" hidden>No dishes match your search. Try a different name or cuisine.</p>'
+);
+const noResults = $(".empty");
+
+function applySearch() {
+  const query = searchBox.value.trim().toLowerCase();
+
+  cards.forEach((card) => {
+    const text = [$("h3", card).textContent, $(".shop", card).textContent, card.dataset.cuisine].join(" ").toLowerCase();
+    card.hidden = !text.includes(query);
+  });
+
+  restos.forEach((resto) => {
+    const text = (resto.textContent).toLowerCase();
+    resto.hidden = !text.includes(query);
+  });
+
+  // Show the message if no dish is visible (search and cuisine filter combined)
+  noResults.hidden = [...cards].some((card) => card.offsetParent !== null);
+}
+
+searchBox.addEventListener("input", applySearch);
+document.querySelectorAll(".filter-input").forEach((radio) => radio.addEventListener("change", applySearch));
+
+render();
+
+</script>
+</body>
+</html>
