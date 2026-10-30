@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zaiqa Dash – Food delivery, simplified</title>
+<meta name="description" content="Order from your favourite restaurants and get it delivered fast with Zaiqa Dash.">
+<style>
+  :root{
+    --accent:#f26a21; --accent-d:#d9560f; --accent-soft:#fff1e8;
+    --ink:#101828; --ink-2:#344054; --muted:#667085; --line:#eaecf0;
+    --bg:#ffffff; --bg-alt:#f9fafb; --dark:#0f172a; --ok:#12b76a;
+    --r:16px; --shadow:0 1px 2px rgba(16,24,40,.06),0 8px 24px rgba(16,24,40,.06);
+    --shadow-h:0 2px 4px rgba(16,24,40,.06),0 18px 40px rgba(16,24,40,.12);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+  button{font-family:inherit}
+  .wrap{width:min(1180px,92%);margin-inline:auto}
+  .icon{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+  /* Buttons */
+  .btn{display:inline-flex;align-items:center;gap:8px;border:1px solid transparent;border-radius:12px;padding:12px 22px;font-weight:600;font-size:.95rem;cursor:pointer;transition:.2s}
+  .btn-primary{background:var(--accent);color:#fff;box-shadow:0 1px 2px rgba(16,24,40,.1)}
+  .btn-primary:hover{background:var(--accent-d);transform:translateY(-1px)}
+  .btn-outline{background:#fff;border-color:var(--line);color:var(--ink)}
+  .btn-outline:hover{border-color:var(--ink-2)}
+  .btn-lg{padding:15px 28px;font-size:1rem}
+
+  /* Top bar */
+  .topbar{background:var(--dark);color:#cbd5e1;font-size:.85rem;text-align:center;padding:8px 12px}
+  .topbar b{color:#fff}
+
+  /* Header */
+  header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.88);backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:72px;gap:20px}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.3rem;letter-spacing:-.4px}
+  .logo-mark{width:36px;height:36px;border-radius:10px;background:var(--accent);display:grid;place-items:center;color:#fff}
+  .menu{display:flex;gap:32px;font-weight:500;color:var(--ink-2);font-size:.95rem}
+  .menu a:hover{color:var(--accent)}
+  .nav-cta{display:flex;gap:10px;align-items:center}
+  .burger{display:none;background:none;border:0;cursor:pointer;color:var(--ink)}
+
+  /* Hero */
+  .hero{background:radial-gradient(1200px 500px at 85% -10%,#ffe3d1 0%,transparent 60%),linear-gradient(180deg,#fffaf6,#fff)}
+  .hero-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:56px;align-items:center;padding:72px 0 88px}
+  .badge{display:inline-flex;align-items:center;gap:8px;background:var(--accent-soft);color:var(--accent-d);font-weight:600;font-size:.85rem;padding:6px 14px;border-radius:999px;margin-bottom:22px}
+  .hero h1{font-size:clamp(2.4rem,5vw,3.9rem);line-height:1.08;font-weight:800;letter-spacing:-1.8px}
+  .hero h1 em{font-style:normal;color:var(--accent)}
+  .hero p.lead{font-size:1.15rem;color:var(--muted);margin:20px 0 32px;max-width:500px}
+  .finder{display:flex;gap:10px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:8px;box-shadow:var(--shadow);max-width:540px}
+  .finder .field{flex:1;display:flex;align-items:center;gap:10px;padding:0 12px;color:var(--muted)}
+  .finder input{flex:1;border:0;outline:0;font-size:1rem;background:transparent;color:var(--ink);min-width:0}
+  .trust{display:flex;gap:28px;margin-top:34px;flex-wrap:wrap}
+  .trust div{display:flex;flex-direction:column}
+  .trust b{font-size:1.5rem;letter-spacing:-.5px}
+  .trust span{font-size:.85rem;color:var(--muted)}
+  .hero-visual{position:relative}
+  .hero-visual .main{border-radius:28px;aspect-ratio:1/1.05;object-fit:cover;width:100%;box-shadow:0 30px 60px rgba(16,24,40,.2);background:linear-gradient(135deg,#ffd0b0,#f26a21)}
+  .float{position:absolute;background:#fff;border-radius:14px;padding:12px 16px;box-shadow:var(--shadow-h);display:flex;align-items:center;gap:12px;font-size:.88rem}
+  .float b{display:block;font-size:.95rem}
+  .float .dot{width:38px;height:38px;border-radius:10px;display:grid;place-items:center}
+  .f1{left:-28px;bottom:48px}
+  .f2{right:-14px;top:36px}
+
+  /* Section base */
+  section{padding:84px 0}
+  .alt{background:var(--bg-alt)}
+  .eyebrow{color:var(--accent);font-weight:700;font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px}
+  .h2{font-size:clamp(1.7rem,3vw,2.35rem);font-weight:800;letter-spacing:-.9px;line-height:1.2}
+  .sub{color:var(--muted);margin-top:10px;max-width:560px}
+  .head{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:32px}
+
+  /* Category pills */
+  .pills{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:30px}
+  .pill{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:9px 18px;font-weight:600;font-size:.9rem;color:var(--ink-2);cursor:pointer;transition:.2s}
+  .pill:hover{border-color:var(--accent);color:var(--accent)}
+  .pill.on{background:var(--ink);border-color:var(--ink);color:#fff}
+
+  /* Restaurant cards */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:24px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;transition:.25s;display:flex;flex-direction:column}
+  .card:hover{transform:translateY(-4px);box-shadow:var(--shadow-h)}
+  .thumb{position:relative;aspect-ratio:16/10;overflow:hidden;background:linear-gradient(135deg,#fde3d0,#f9b98f)}
+  .thumb img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+  .card:hover .thumb img{transform:scale(1.06)}
+  .promo{position:absolute;left:12px;top:12px;background:#fff;color:var(--accent-d);font-weight:700;font-size:.75rem;padding:5px 10px;border-radius:8px;box-shadow:var(--shadow)}
+  .fav{position:absolute;right:12px;top:12px;width:34px;height:34px;border-radius:50%;background:#fff;display:grid;place-items:center;border:0;cursor:pointer;color:var(--ink-2);box-shadow:var(--shadow)}
+  .fav.on{color:#e11d48}
+  .fav.on .icon{fill:#e11d48}
+  .body{padding:16px 18px 18px}
+  .row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .body h3{font-size:1.05rem;letter-spacing:-.2px}
+  .score{display:inline-flex;align-items:center;gap:4px;background:#ecfdf3;color:#027a48;font-weight:700;font-size:.82rem;padding:3px 8px;border-radius:8px}
+  .cuisine{color:var(--muted);font-size:.88rem;margin:2px 0 12px}
+  .meta{display:flex;gap:16px;font-size:.85rem;color:var(--ink-2);border-top:1px solid var(--line);padding-top:12px}
+  .meta span{display:inline-flex;align-items:center;gap:6px}
+  .meta .icon{width:16px;height:16px;color:var(--muted)}
+  .empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:40px}
+
+  /* Steps */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;position:relative}
+  .step{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:32px 28px}
+  .step .num{width:48px;height:48px;border-radius:12px;background:var(--accent-soft);color:var(--accent-d);display:grid;place-items:center;margin-bottom:18px}
+  .step .num .icon{width:24px;height:24px}
+  .step h3{font-size:1.15rem;margin-bottom:6px;letter-spacing:-.2px}
+  .step p{color:var(--muted);font-size:.96rem}
+
+  /* Features */
+  .feat{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+  .feat img{border-radius:24px;box-shadow:var(--shadow-h);aspect-ratio:4/3;object-fit:cover;width:100%;background:linear-gradient(135deg,#d5f5e3,#7ddba6)}
+  .list{margin-top:26px;display:grid;gap:18px}
+  .list li{list-style:none;display:flex;gap:14px}
+  .list .tick{width:28px;height:28px;border-radius:50%;background:#ecfdf3;color:#027a48;display:grid;place-items:center;flex:none;margin-top:2px}
+  .list .tick .icon{width:16px;height:16px;stroke-width:2.4}
+  .list b{display:block}
+  .list span{color:var(--muted);font-size:.95rem}
+
+  /* Testimonials */
+  .quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .quote{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:28px}
+  .stars{color:#f79009;display:flex;gap:2px;margin-bottom:14px}
+  .stars .icon{fill:#f79009;stroke:#f79009;width:18px;height:18px}
+  .quote p{color:var(--ink-2)}
+  .who{display:flex;align-items:center;gap:12px;margin-top:20px}
+  .av{width:42px;height:42px;border-radius:50%;background:var(--accent-soft);color:var(--accent-d);display:grid;place-items:center;font-weight:700}
+  .who b{display:block;font-size:.95rem}
+  .who span{font-size:.82rem;color:var(--muted)}
+
+  /* Partner */
+  .partner{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+  .pcard{border-radius:24px;padding:40px;position:relative;overflow:hidden}
+  .pcard.a{background:var(--dark);color:#fff}
+  .pcard.b{background:var(--accent);color:#fff}
+  .pcard h3{font-size:1.5rem;letter-spacing:-.5px;margin-bottom:8px}
+  .pcard p{opacity:.85;margin-bottom:24px;max-width:340px}
+  .pcard .btn{background:#fff;color:var(--ink)}
+  .pcard .btn:hover{transform:translateY(-1px)}
+
+  /* FAQ */
+  .faq{max-width:760px;margin:36px auto 0}
+  details{border-bottom:1px solid var(--line);padding:20px 4px}
+  summary{cursor:pointer;font-weight:600;font-size:1.05rem;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";font-size:1.5rem;color:var(--accent);transition:.2s;line-height:1}
+  details[open] summary::after{transform:rotate(45deg)}
+  details p{color:var(--muted);margin-top:12px}
+
+  /* App CTA */
+  .app{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:28px;color:#fff;padding:56px;display:grid;grid-template-columns:1.2fr 1fr;gap:32px;align-items:center;overflow:hidden}
+  .app h2{font-size:2rem;letter-spacing:-.8px;line-height:1.2}
+  .app p{color:#cbd5e1;margin:12px 0 26px}
+  .stores{display:flex;gap:12px;flex-wrap:wrap}
+  .store{display:flex;align-items:center;gap:10px;background:#fff;color:var(--ink);padding:10px 18px;border-radius:12px;font-weight:600;line-height:1.2}
+  .store small{display:block;font-size:.7rem;font-weight:500;color:var(--muted)}
+  .phone{justify-self:center;width:220px;aspect-ratio:9/18;border-radius:32px;border:6px solid #334155;background:linear-gradient(160deg,#f26a21,#ffa36b);display:grid;place-items:center;box-shadow:0 30px 60px rgba(0,0,0,.4);transform:rotate(6deg)}
+  .phone .logo-mark{width:72px;height:72px;border-radius:20px;background:#fff;color:var(--accent)}
+  .phone .icon{width:36px;height:36px}
+
+  /* Footer */
+  footer{background:var(--bg-alt);border-top:1px solid var(--line);padding:64px 0 28px;margin-top:84px}
+  .fgrid{display:grid;grid-template-columns:1.6fr repeat(3,1fr);gap:40px}
+  .fgrid h4{font-size:.85rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px;color:var(--ink-2)}
+  .fgrid li{list-style:none;margin-bottom:10px;font-size:.93rem;color:var(--muted)}
+  .fgrid li a:hover{color:var(--accent)}
+  .fgrid p{color:var(--muted);font-size:.93rem;margin-top:14px;max-width:280px}
+  .fbot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-top:1px solid var(--line);margin-top:44px;padding-top:22px;font-size:.85rem;color:var(--muted)}
+
+  /* Responsive */
+  @media(max-width:960px){
+    .menu,.nav-cta .btn-outline{display:none}
+    .burger{display:block}
+    .menu.open{display:flex;flex-direction:column;position:absolute;top:72px;left:0;right:0;background:#fff;padding:20px 4%;border-bottom:1px solid var(--line);gap:16px}
+    .hero-grid,.feat,.app,.partner{grid-template-columns:1fr}
+    .hero-grid{padding:48px 0 60px;gap:40px}
+    .steps,.quotes{grid-template-columns:1fr}
+    .fgrid{grid-template-columns:1fr 1fr}
+    .f1{left:8px}.f2{right:8px}
+    .app{padding:36px 28px}
+    .phone{width:180px}
+    section{padding:60px 0}
+  }
+  @media(max-width:520px){
+    .finder{flex-direction:column}
+    .finder .field{padding:10px 12px}
+    .fgrid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<!-- SVG icon sprite -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-bike" viewBox="0 0 24 24"><circle cx="6" cy="17" r="3"/><circle cx="18" cy="17" r="3"/><path d="M6 17l4-8h5l3 8M10 9 9 6H7"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 21s-8-5.2-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.8-8 11-8 11z"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-bag" viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8a3 3 0 0 1 6 0"/></symbol>
+    <symbol id="i-utensils" viewBox="0 0 24 24"><path d="M7 3v8M4 3v5a3 3 0 0 0 6 0V3M7 11v10M17 3c-2 2-3 5-3 8h3v10"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 5 6v6c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6l-7-3z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2.5"/><path d="M11 18h2"/></symbol>
+  </defs>
+</svg>
+
+<div class="topbar">🎉 Naye users ke liye <b>30% OFF</b> pehle order par — code <b>WELCOME30</b></div>
+
+<header>
+  <div class="wrap nav">
+    <a href="#" class="logo">
+      <span class="logo-mark"><svg class="icon"><use href="#i-utensils"/></svg></span>
+      Zaiqa Dash
+    </a>
+    <nav class="menu" id="menu">
+      <a href="#restaurants">Restaurants</a>
+      <a href="#how">How it works</a>
+      <a href="#why">Why us</a>
+      <a href="#partner">Partner with us</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="#" class="btn btn-outline">Log in</a>
+      <a href="#restaurants" class="btn btn-primary">Order now</a>
+      <button class="burger" id="burger" aria-label="Menu"><svg class="icon" style="width:26px;height:26px"><use href="#i-menu"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main>
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="badge"><svg class="icon" style="width:16px;height:16px"><use href="#i-bolt"/></svg> Average delivery in 30 minutes</span>
+      <h1>Aap ka favourite khaana, <em>fast</em> aur fresh.</h1>
+      <p class="lead">Apne shehar ke best restaurants se order karein aur live tracking ke saath khaana seedha apne darwaze par receive karein.</p>
+      <form class="finder" id="finder">
+        <label class="field"><svg class="icon"><use href="#i-pin"/></svg><input type="text" placeholder="Apna address daalein" aria-label="Address"></label>
+        <button class="btn btn-primary" type="submit">Find food</button>
+      </form>
+      <div class="trust">
+        <div><b>500+</b><span>Partner restaurants</span></div>
+        <div><b>50k+</b><span>Happy customers</span></div>
+        <div><b>4.8/5</b><span>Average rating</span></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <img class="main" alt="Fresh burger and fries" src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=900&q=80" onerror="this.removeAttribute('src')">
+      <div class="float f1"><span class="dot" style="background:#ecfdf3;color:#027a48"><svg class="icon"><use href="#i-bike"/></svg></span><div><b>Rider on the way</b><span style="color:var(--muted)">Arriving in 12 min</span></div></div>
+      <div class="float f2"><span class="dot" style="background:#fff1e8;color:var(--accent-d)"><svg class="icon"><use href="#i-star"/></svg></span><div><b>4.9 rating</b><span style="color:var(--muted)">2,300+ reviews</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- RESTAURANTS -->
+<section id="restaurants">
+  <div class="wrap">
+    <div class="head">
+      <div>
+        <div class="eyebrow">Explore</div>
+        <h2 class="h2">Popular restaurants near you</h2>
+        <p class="sub">Cuisine ke hisaab se filter karein ya naam se search karein.</p>
+      </div>
+      <label class="finder" style="box-shadow:none;max-width:320px;padding:6px 8px">
+        <span class="field" style="display:flex"><svg class="icon"><use href="#i-search"/></svg><input id="q" type="text" placeholder="Search restaurants" aria-label="Search restaurants"></span>
+      </label>
+    </div>
+    <div class="pills" id="pills">
+      <button class="pill on" data-c="all">All</button>
+      <button class="pill" data-c="burger">Burgers</button>
+      <button class="pill" data-c="pizza">Pizza</button>
+      <button class="pill" data-c="desi">Desi</button>
+      <button class="pill" data-c="bbq">BBQ</button>
+      <button class="pill" data-c="dessert">Desserts</button>
+    </div>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section id="how" class="alt">
+  <div class="wrap">
+    <div style="text-align:center;margin-bottom:44px">
+      <div class="eyebrow">How it works</div>
+      <h2 class="h2">Teen steps mein khaana ready</h2>
+      <p class="sub" style="margin-inline:auto">Order karna asaan, tez aur bilkul hassle-free hai.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="num"><svg class="icon"><use href="#i-pin"/></svg></div><h3>1. Location select karein</h3><p>Apna address enter karein aur apne area ke available restaurants dekhein.</p></div>
+      <div class="step"><div class="num"><svg class="icon"><use href="#i-bag"/></svg></div><h3>2. Order place karein</h3><p>Menu browse karein, dishes cart mein add karein aur secure checkout karein.</p></div>
+      <div class="step"><div class="num"><svg class="icon"><use href="#i-bike"/></svg></div><h3>3. Track &amp; enjoy</h3><p>Rider ki live location track karein aur garma garam khaana enjoy karein.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section id="why">
+  <div class="wrap feat">
+    <img alt="Delicious biryani" src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=1000&q=80" onerror="this.removeAttribute('src')">
+    <div>
+      <div class="eyebrow">Why Zaiqa Dash</div>
+      <h2 class="h2">Sirf delivery nahi, ek behtareen experience</h2>
+      <ul class="list">
+        <li><span class="tick"><svg class="icon"><use href="#i-check"/></svg></span><div><b>Lightning-fast delivery</b><span>Smart routing ki wajah se aap ka order hamesha time par pohanchta hai.</span></div></li>
+        <li><span class="tick"><svg class="icon"><use href="#i-check"/></svg></span><div><b>Safe &amp; secure payments</b><span>Card, wallet ya cash on delivery — jo aap ko pasand ho.</span></div></li>
+        <li><span class="tick"><svg class="icon"><use href="#i-check"/></svg></span><div><b>Quality guaranteed</b><span>Hum sirf verified aur top-rated restaurants ke saath kaam karte hain.</span></div></li>
+        <li><span class="tick"><svg class="icon"><use href="#i-check"/></svg></span><div><b>24/7 customer support</b><span>Koi masla ho to hamari team hamesha madad ke liye maujood hai.</span></div></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="alt">
+  <div class="wrap">
+    <div style="text-align:center;margin-bottom:44px">
+      <div class="eyebrow">Testimonials</div>
+      <h2 class="h2">Customers kya kehte hain</h2>
+    </div>
+    <div class="quotes">
+      <div class="quote"><div class="stars"><svg class="icon"><use href="#i-star"/></svg><svg class="icon"><use href="#i-star"/></svg><svg class="icon"><use href="#i-star"/></svg><svg class="icon"><use href="#i-star"/></svg><svg class="icon"><use href="#i-star"/></svg></div><p>Delivery bohat fast thi aur khaana bilkul garam pohancha. App use karna bhi bohat asaan hai.</p><div class="who"><div class="av">AK</div><div><b>Ayesha Khan</b><span>Lahore</span></div></div></div>
+      <div class="quote"><div class="stars"><svg class="icon"><use href="#i-star"/></svg><svg class="icon"><use href="#i-star"/></svg><svg class="icon"><use href="#i-star"/></svg><svg class="icon"><use href="#i-star"/></svg><svg class="icon"><use href="#i-star"/></svg></div><p>Restaurants ki variety zabardast hai. Live tracking se pata hota hai rider kahan hai.</p><div class="who"><div class="av">HR</div><div><b>Hamza Raza</b><span>Faisalabad</span></div></div></div>
+      <div class="quote"><div class="stars"><svg class="icon"><use href="#i-star"/></svg><svg class="icon"><use href="#i-star"/></svg><svg class="icon"><use href="#i-star"/></svg><svg class="icon"><use href="#i-star"/></svg><svg class="icon"><use href="#i-star"/></svg></div><p>Offers aur discounts kamaal ke hain. Customer support ne bhi foran masla hal kar diya.</p><div class="who"><div class="av">SM</div><div><b>Sara Malik</b><span>Islamabad</span></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PARTNER -->
+<section id="partner">
+  <div class="wrap partner">
+    <div class="pcard a"><h3>Apna restaurant list karein</h3><p>Hazaron naye customers tak pohanchein aur apna business grow karein.</p><a href="#" class="btn">Become a partner</a></div>
+    <div class="pcard b"><h3>Rider banein, kamayein</h3><p>Flexible timings, weekly payouts aur behtareen earning opportunities.</p><a href="#" class="btn">Join as rider</a></div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="alt">
+  <div class="wrap">
+    <div style="text-align:center">
+      <div class="eyebrow">FAQ</div>
+      <h2 class="h2">Aksar poochay jaane wale sawalat</h2>
+    </div>
+    <div class="faq">
+      <details open><summary>Delivery mein kitna time lagta hai?</summary><p>Zyada tar orders 25 se 40 minute mein deliver ho jate hain, jo restaurant aur aap ki location par depend karta hai.</p></details>
+      <details><summary>Payment ke kaun se options hain?</summary><p>Aap credit/debit card, mobile wallet ya cash on delivery use kar sakte hain.</p></details>
+      <details><summary>Kya main apna order track kar sakta hoon?</summary><p>Ji haan, order place karne ke baad aap rider ki live location app mein dekh sakte hain.</p></details>
+      <details><summary>Order cancel kaise karun?</summary><p>Restaurant ke order accept karne se pehle aap app se free mein cancel kar sakte hain.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- APP -->
+<section style="padding-bottom:0">
+  <div class="wrap">
+    <div class="app">
+      <div>
+        <h2>Zaiqa Dash app download karein</h2>
+        <p>Exclusive offers, faster checkout aur live order tracking — sab kuch ek app mein.</p>
+        <div class="stores">
+          <a href="#" class="store"><svg class="icon" style="width:26px;height:26px"><use href="#i-phone"/></svg><span><small>Download on the</small>App Store</span></a>
+          <a href="#" class="store"><svg class="icon" style="width:26px;height:26px"><use href="#i-phone"/></svg><span><small>Get it on</small>Google Play</span></a>
+        </div>
+      </div>
+      <div class="phone"><span class="logo-mark"><svg class="icon"><use href="#i-utensils"/></svg></span></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <a href="#" class="logo"><span class="logo-mark"><svg class="icon"><use href="#i-utensils"/></svg></span>Zaiqa Dash</a>
+        <p>Aap ke favourite restaurants se fast, fresh aur reliable food delivery.</p>
+      </div>
+      <div><h4>Company</h4><ul><li><a href="#">About us</a></li><li><a href="#">Careers</a></li><li><a href="#">Blog</a></li></ul></div>
+      <div><h4>Support</h4><ul><li><a href="#">Help center</a></li><li><a href="#">Contact us</a></li><li><a href="#faq">FAQ</a></li></ul></div>
+      <div><h4>Legal</h4><ul><li><a href="#">Terms of service</a></li><li><a href="#">Privacy policy</a></li><li><a href="#">Cookies</a></li></ul></div>
+    </div>
+    <div class="fbot"><span>© 2026 Zaiqa Dash. All rights reserved.</span><span>Demo project — fictional brand.</span></div>
+  </div>
+</footer>
+
+<script>
+  const IMG = {
+    burger:"photo-1568901346375-23c9450c58cd",
+    pizza:"photo-1513104890138-7c749659a591",
+    desi:"photo-1563379091339-03b21ab4a4f8",
+    bbq:"photo-1529193591184-b1d58069ecdd",
+    dessert:"photo-1578985545062-69928b1d9587"
+  };
+  const data = [
+    {n:"Smash Burger Co.",c:"burger",k:"Burgers • Fast food",r:4.7,t:"20–30 min",f:"Rs. 99",p:"Free delivery"},
+    {n:"Crust & Cheese",c:"pizza",k:"Pizza • Italian",r:4.6,t:"25–35 min",f:"Rs. 149",p:"30% OFF"},
+    {n:"Dera Biryani House",c:"desi",k:"Biryani • Desi",r:4.9,t:"30–40 min",f:"Rs. 79",p:"Top rated"},
+    {n:"Angaar BBQ",c:"bbq",k:"BBQ • Grill",r:4.8,t:"35–45 min",f:"Rs. 129",p:"New"},
+    {n:"Sweet Tooth Bakery",c:"dessert",k:"Cakes • Desserts",r:4.5,t:"20–30 min",f:"Rs. 99",p:"Free delivery"},
+    {n:"Karahi Junction",c:"desi",k:"Karahi • Desi",r:4.7,t:"30–40 min",f:"Rs. 109",p:"Popular"},
+    {n:"Patty Lab",c:"burger",k:"Burgers • Sandwiches",r:4.4,t:"15–25 min",f:"Rs. 89",p:"Fast"},
+    {n:"Tikka Tonight",c:"bbq",k:"BBQ • Rolls",r:4.6,t:"20–30 min",f:"Rs. 69",p:"Rs. 69 delivery"}
+  ];
+  const grid=document.getElementById('grid'), q=document.getElementById('q');
+  let cat='all';
+  const svg=(id)=>`<svg class="icon"><use href="#${id}"/></svg>`;
+  function render(){
+    const term=q.value.trim().toLowerCase();
+    const list=data.filter(d=>(cat==='all'||d.c===cat)&&(d.n+d.k).toLowerCase().includes(term));
+    grid.innerHTML=list.length?list.map(d=>`
+      <article class="card">
+        <div class="thumb">
+          <img loading="lazy" alt="${d.n}" src="https://images.unsplash.com/${IMG[d.c]}?auto=format&fit=crop&w=700&q=75" onerror="this.style.display='none'">
+          <span class="promo">${d.p}</span>
+          <button class="fav" aria-label="Favourite">${svg('i-heart')}</button>
+        </div>
+        <div class="body">
+          <div class="row"><h3>${d.n}</h3><span class="score">★ ${d.r}</span></div>
+          <div class="cuisine">${d.k}</div>
+          <div class="meta"><span>${svg('i-clock')}${d.t}</span><span>${svg('i-bike')}${d.f}</span></div>
+        </div>
+      </article>`).join(''):'<div class="empty">Koi restaurant nahi mila. Dobara try karein.</div>';
+  }
+  document.getElementById('pills').addEventListener('click',e=>{
+    const b=e.target.closest('.pill'); if(!b) return;
+    document.querySelectorAll('.pill').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on'); cat=b.dataset.c; render();
+  });
+  grid.addEventListener('click',e=>{const f=e.target.closest('.fav'); if(f) f.classList.toggle('on');});
+  q.addEventListener('input',render);
+  document.getElementById('finder').addEventListener('submit',e=>{e.preventDefault();document.getElementById('restaurants').scrollIntoView();});
+  document.getElementById('burger').addEventListener('click',()=>document.getElementById('menu').classList.toggle('open'));
+  document.querySelectorAll('#menu a').forEach(a=>a.addEventListener('click',()=>document.getElementById('menu').classList.remove('open')));
+  render();
+</script>
+</body>
+</html>
